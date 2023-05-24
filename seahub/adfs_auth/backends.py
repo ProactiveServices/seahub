@@ -156,7 +156,8 @@ class Saml2Backend(ModelBackend):
         parse_result = {}
         for saml_attr, django_attrs in list(attribute_mapping.items()):
             try:
-                parse_result[django_attrs] = attributes.get(saml_attr, [''])[0]
+                for attr in django_attrs:
+                    parse_result[attr] = attributes.get(saml_attr, [''])[0]
             except KeyError:
                 pass
 
