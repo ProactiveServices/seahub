@@ -1,6 +1,7 @@
 # Copyright (c) 2012-2016 Seafile Ltd.
 from django.conf.urls import url, include
 from django.views.generic import TemplateView
+from seahub.api2.endpoints.file_ledgers import FileLedgersExportToExcelView, FileLedgersExportToExcelTaskQueryView, FileLedgersView
 
 from seahub.auth.views import multi_adfs_sso
 from seahub.views import *
@@ -415,6 +416,11 @@ urlpatterns = [
     url(r'^api/v2.1/repos/(?P<repo_id>[-0-9a-f]{36})/file/participants/$', FileParticipantsView.as_view(), name='api-v2.1-file-participants'),
     url(r'^api/v2.1/repos/(?P<repo_id>[-0-9a-f]{36})/file/participant/$', FileParticipantView.as_view(), name='api-v2.1-file-participant'),
     url(r'^api/v2.1/repos/(?P<repo_id>[-0-9a-f]{36})/related-users/$', RepoRelatedUsersView.as_view(), name='api-v2.1-related-user'),
+
+    ## user:file:ledger
+    url(r'^api/v2.1/repos/(?P<repo_id>[-0-9a-f]{36})/file-ledgers/$', FileLedgersView.as_view(), name='api-v2.1-file-ledgers'),
+    url(r'^api/v2.1/repos/(?P<repo_id>[-0-9a-f]{36})/file-ledgers/export-to-excel/$', FileLedgersExportToExcelView.as_view(), name='api-v2.1-file-ledgers-export-to-excel'),
+    url(r'^api/v2.1/repos/(?P<repo_id>[-0-9a-f]{36})/file-ledgers/export-to-excel/task-query/$', FileLedgersExportToExcelTaskQueryView.as_view(), name='api-v2.1-export-file-ledgers-export-to-excel-task-query'),
 
     url(r'^api/v2.1/repos/(?P<repo_id>[-0-9a-f]{36})/auto-delete/$', RepoAutoDeleteView.as_view(), name='api-v2.1-repo-auto-delete'),
 
