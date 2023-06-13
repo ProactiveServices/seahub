@@ -6,6 +6,8 @@ import URLDecorator from '../../utils/url-decorator';
 import Rename from '../../components/rename';
 
 import '../../css/history-record-item.css';
+import moment from 'moment';
+moment.locale(window.app.config.lang);
 
 class HistoryVersion extends React.Component {
 
@@ -20,13 +22,13 @@ class HistoryVersion extends React.Component {
 
   onMouseEnter = () => {
     const { currentVersion, historyVersion } = this.props;
-    if (currentVersion.commitId === historyVersion.commitId) return;
+    if (currentVersion.commit_id === historyVersion.commit_id) return;
     this.setState({ isShowOperationIcon: true });
   }
 
   onMouseLeave = () => {
     const { currentVersion, historyVersion } = this.props;
-    if (currentVersion.commitId === historyVersion.commitId) return;
+    if (currentVersion.commit_id === historyVersion.commit_id) return;
     this.setState({ isShowOperationIcon: false });
   }
 
@@ -37,7 +39,7 @@ class HistoryVersion extends React.Component {
   onClick = () => {
     this.setState({ isShowOperationIcon: false });
     const { currentVersion, historyVersion } = this.props;
-    if (currentVersion.commitId === historyVersion.commitId) return;
+    if (currentVersion.commit_id === historyVersion.commit_id) return;
     this.props.onSelectHistoryVersion(historyVersion);
   }
 
@@ -55,8 +57,8 @@ class HistoryVersion extends React.Component {
   }
 
   onRenameConfirm = (newName) => {
-    const { revFileId } = this.props.historyVersion;
-    this.props.renameHistoryVersion(revFileId, newName);
+    const { rev_file_id } = this.props.historyVersion;
+    this.props.renameHistoryVersion(rev_file_id, newName);
     this.toggleRename();
   }
 
@@ -67,9 +69,9 @@ class HistoryVersion extends React.Component {
   render() {
     const { currentVersion, historyVersion } = this.props;
     if (!currentVersion || !historyVersion) return null;
-    const { ctime, commitId, creatorName, revFileId, name} = historyVersion;
-    const isHighlightItem = commitId === currentVersion.commitId;
-    const url = URLDecorator.getUrl({ type: 'download_historic_file', filePath: filePath, objID: revFileId });
+    const { ctime, commit_id, creator_name, rev_file_id, name} = historyVersion;
+    const isHighlightItem = commit_id === currentVersion.commit_id;
+    const url = URLDecorator.getUrl({ type: 'download_historic_file', filePath: filePath, objID: rev_file_id });
     return (
       <li
         className={`history-list-item ${isHighlightItem ? 'item-active' : ''}`}
@@ -82,10 +84,10 @@ class HistoryVersion extends React.Component {
             <Rename name={name} onRenameConfirm={this.onRenameConfirm} onRenameCancel={this.onRenameCancel}/>
             :<div className="name">{name}</div>
           }
-          <div className="time">{ctime}</div>
+          <div className="time">{moment(ctime).format('YYYY-MM-DD HH:mm')}</div>
           <div className="owner">
             <span className="squire-icon"></span>
-            <span>{creatorName}</span>
+            <span>{creator_name}</span>
           </div>
         </div>
         <div className="history-operation">
